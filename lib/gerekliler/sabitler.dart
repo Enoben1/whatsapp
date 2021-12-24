@@ -12,5 +12,6 @@ Color rkwhatsappGreen = Color.fromRGBO(	18, 140, 126, 1);
 
 TextStyle stytxt = TextStyle(color: rktext, fontSize: 16);
 TextStyle stytxt2 = TextStyle(color: rktext, fontSize: 15);
+TextStyle stytxt3 = TextStyle(color: rkwhatsappGreen, fontSize: 15);
 TextStyle stynametxt = TextStyle(color: rktext2, fontSize: 18, fontWeight: FontWeight.bold);
 TextStyle stypopupmenutxt = TextStyle(color: rktext2, fontSize: 16);

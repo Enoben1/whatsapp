@@ -31,6 +31,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  double toolbarheight = 100;
+  int selectedPage = 1;
+
   List<String> listeisim = ["Erdal Enes Kara", "Alper Alp", "Görkem Buzdere"];
   List<bool> isSelectedlist = [false, false, false];
   List<String> listeisimfiltreli = ["Erdal Enes Kara", "Alper Alp", "Görkem Buzdere"];
@@ -47,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: rkbackground,
       appBar: AppBar(
-        toolbarHeight: 100,
+        toolbarHeight: toolbarheight,
         backgroundColor: rkappbar,
         title: Column(
           children: [
@@ -62,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           eCtrl2.clear();
                           canLongPress = true;
                           setState(() {
+                            toolbarheight = 100;
                             listeisimfiltreli.clear();
                             for(var i = 0; i < listeisim.length; i++ ){
                               listeisimfiltreli.add(listeisim[i]);
@@ -113,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         IconButton(
                             onPressed: () {
                               setState(() {
+                                toolbarheight = 55;
                                 isClickedSearchBtn = true;
                                 canLongPress = false;
                               });
@@ -198,17 +203,32 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "SOHBETLER",
-                          style: stytxt2,
+                        GestureDetector(
+                          onTap: (){setState(() {
+                            selectedPage = 1;
+                          });},
+                          child: Text(
+                            "SOHBETLER",
+                            style: selectedPage==1?stytxt3:stytxt2,
+                          ),
                         ),
-                        Text(
-                          "DURUM",
-                          style: stytxt2,
+                        GestureDetector(
+                          onTap: (){setState(() {
+                            selectedPage = 2;
+                          });},
+                          child: Text(
+                            "DURUM",
+                            style: selectedPage==2?stytxt3:stytxt2,
+                          ),
                         ),
-                        Text(
-                          "ARAMALAR",
-                          style: stytxt2,
+                        GestureDetector(
+                          onTap: (){setState(() {
+                            selectedPage = 3;
+                          });},
+                          child: Text(
+                            "ARAMALAR",
+                            style: selectedPage==3?stytxt3:stytxt2,
+                          ),
                         ),
                       ],
                     ),
@@ -279,43 +299,76 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          Flexible(
-              child: ListView.builder(
-                  itemCount: listeisimfiltreli.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    return GestureDetector(onTap: () async{
-                      final navigator = Navigator.of(context);
-                      await Future.delayed(Duration.zero);
-                      navigator.push(
-                        MaterialPageRoute(
-                            builder: (_) => MessagePage(listeisimfiltreli[index])),
-                      );
-                    } ,onLongPress: (){setState(() {
-                      canLongPress? isSelectedlist[index] = !isSelectedlist[index]:"";
-                    });} ,child: MessageCard(listeisimfiltreli[index], 24, isSelectedlist[index]));
-                  })),
+          Visibility(
+            visible: selectedPage==1?true:false,
+            child: Flexible(
+                child: ListView.builder(
+                    itemCount: listeisimfiltreli.length,
+                    itemBuilder: (BuildContext ctxt, int index) {
+                      return GestureDetector(onTap: () async{
+                        final navigator = Navigator.of(context);
+                        await Future.delayed(Duration.zero);
+                        navigator.push(
+                          MaterialPageRoute(
+                              builder: (_) => MessagePage(listeisimfiltreli[index])),
+                        );
+                      } ,onLongPress: (){setState(() {
+                        canLongPress? isSelectedlist[index] = !isSelectedlist[index]:"";
+                      });} ,child: MessageCard(listeisimfiltreli[index], 24, isSelectedlist[index]));
+                    })),
+          ),
+          Visibility(visible: selectedPage==2?true:false, child: Column(children:[MessageCard("Durum", 24, false),
+            Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 15, top: 12, bottom: 12),
+                  child: Text(
+                    "Son güncellemeler",
+                    style: TextStyle(color: rktext, fontSize: 15),
+                  )),
+              ],
+            ),
+          ] )),
+          Visibility(visible: selectedPage==3?true:false, child: Column(children:[
+            Row(
+              children: [
+                Expanded(child: MessageCard("Erdal Enes Kara", 24, false)),
+                Container(margin: EdgeInsets.all(15), child: Icon(Icons.call, color: rkwhatsappGreen, size: 22,))
+              ],
+            ),
+          ] ))
         ],
       ),
       floatingActionButton: SizedBox(
         width: 44,
         height: 44,
         child: FloatingActionButton(
-          child: Icon(
+          child: selectedPage == 1?Icon(
             isClickedNewPersonBtn == false ? Icons.person_add : Icons.close,
             color: rktext2,
-          ),
+          ):selectedPage==2?Icon(Icons.photo_camera, color: rktext2,):Icon(Icons.add_ic_call, color: rktext2,),
           hoverColor: rkwhatsappGreen.withOpacity(0.75),
           backgroundColor: rkwhatsappGreen,
           onPressed: () {
             setState(() {
-              if(isClickedNewPersonBtn == true){
-                eCtrl.clear();
-                isClickedNewPersonBtn = false;
+              if(selectedPage == 1) {
+                if (isClickedNewPersonBtn == true) {
+                  eCtrl.clear();
+                  isClickedNewPersonBtn = false;
+                }
+                else if (isClickedNewPersonBtn == false) {
+                  isClickedNewPersonBtn = true;
+                }
+                //isClickedNewPersonBtn = true;
+
               }
-              else if(isClickedNewPersonBtn == false){
-                isClickedNewPersonBtn = true;
+
+              else if(selectedPage == 2) {
+
               }
-              //isClickedNewPersonBtn = true;
+              else if(selectedPage == 3) {
+
+              }
             });
           },
         ),
