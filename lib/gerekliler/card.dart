@@ -7,6 +7,7 @@ class MessageCard extends StatelessWidget {
   final text;
   final double avatarsize;
   final bool isSelected;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,12 +24,55 @@ class MessageCard extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.all(10),
-                    child: GestureDetector(
-                      child: CircleAvatar(
-                        backgroundColor: Colors.blueGrey,
-                        backgroundImage: AssetImage(('Resimler/Kisiler/' + text + ".jpg")),
-                        child: Icon(Icons.person, size: avatarsize*1.6,),
-                        radius: avatarsize,
+                    child: Container(
+                      child: GestureDetector(
+                        onTap: (){
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  AlertDialog(
+                                    content: Column(
+                                      children: [
+                                        SizedBox(height: 25,),
+                                        Stack(children: [Container(width: 250, height: 250 ,child: Image.asset(('Resimler/Kisiler/' + text + ".JPG"), fit: BoxFit.cover,)),Container(child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(text, style: TextStyle(color: rktext2, fontSize: 16),),
+                                        ), width: double.infinity, color: Colors.black12.withOpacity(0.25),),]),
+                                        Container(width: double.infinity ,color: rkappbar ,child:Padding(
+                                          padding: const EdgeInsets.only(top: 12, bottom: 12),
+                                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround ,children: [Icon(Icons.comment, color: rkwhatsappGreen,),Icon(Icons.call, color: rkwhatsappGreen,),Icon(Icons.videocam, color: rkwhatsappGreen,),Icon(Icons.info, color: rkwhatsappGreen,),],),
+                                        ))
+                                      ],
+                                    ),
+                                    actions: <Widget>[
+                                    ],
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                  SizedBox(),
+                                  SizedBox(),
+                                  SizedBox(),
+                                ],
+                              ));
+                          },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.blueGrey,
+                          backgroundImage: AssetImage(('Resimler/Kisiler/' + text + ".JPG")),
+                          /*child: Icon(Icons.person, size: avatarsize*1.6,),*/
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(decoration: BoxDecoration(shape: BoxShape.circle, color: isSelected?rkbackground:Colors.transparent,) ,child: Icon(Icons.check_circle, color: isSelected?rkwhatsappGreen:Colors.transparent,)),
+                                ],
+                              ),
+                            ],
+                          ),
+                          radius: avatarsize,
+                        ),
                       ),
                     ),
                   ),
@@ -43,7 +87,6 @@ class MessageCard extends StatelessWidget {
                 ],
               ),
             ),
-            Container(margin: EdgeInsets.all(10) ,child: Icon(Icons.check_circle_outline, color: isSelected?rkwhatsappGreen:Colors.transparent,)),
           ],
         ),
     );
@@ -81,8 +124,8 @@ class SettingCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(text, style: TextStyle(color: rktext2, fontSize: 15),),
-                    Text(text2, style: TextStyle(color: rktext, fontSize: 13),)
+                    Text(text, style: TextStyle(color: rktext2, fontSize: 16),),
+                    Visibility(visible: text2!=""?true:false ,child: Text(text2, style: TextStyle(color: rktext, fontSize: 13),))
                   ],
                 ),
               )
@@ -130,3 +173,5 @@ class ProfilCard extends StatelessWidget {
     );
   }
 }
+
+

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp/AyarlarSayfalar%C4%B1/Bildirimler.dart';
+import 'package:whatsapp/AyarlarSayfalar%C4%B1/Depolama.dart';
+import 'package:whatsapp/AyarlarSayfalar%C4%B1/Hesap.dart';
 import 'package:whatsapp/AyarlarSayfalar%C4%B1/Profil.dart';
+import 'package:whatsapp/AyarlarSayfalar%C4%B1/Yard%C4%B1m.dart';
 import 'package:whatsapp/AyarlarSayfaları/Sohbetler.dart';
 import 'package:whatsapp/gerekliler/card.dart';
 import 'package:whatsapp/gerekliler/sabitler.dart';
@@ -11,19 +15,25 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  int isClickSohbet = 0;
+  bool isClickSohbet = false;
+  bool isClickHesap = false;
+  bool isClickDepolama = false;
+  bool isClickYardim = false;
+  bool isClickProfil = false;
+  bool isClickBildirim = false;
+  bool isClickDavet = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: rkbackground,
+      backgroundColor: isDarkMode?rkbackground:Colors.white,
       appBar: AppBar(
-        backgroundColor: rkappbar,
+        backgroundColor: isDarkMode?rkappbar:rkwhatsappGreen,
         title: Column(
           children: [
             Text(
               "Ayarlar",
-              style: TextStyle(color: rktext2, fontSize: 18),
+              style: TextStyle(color: rktext2, fontSize: 16),
             )
           ],
         ),
@@ -32,16 +42,16 @@ class _SettingsPageState extends State<SettingsPage> {
         children: [
           GestureDetector(
             onTapDown: (detail) => setState(() {
-              isClickSohbet = 1;
+              isClickProfil = true;
             }),
             onTapUp: (detail) => setState(() {
-              isClickSohbet = 0;
+              isClickProfil = false;
             }),
             onTapCancel: (){setState(() {
-              isClickSohbet = 0;
+              isClickProfil = false;
             });},
             onTap: () async {
-              isClickSohbet = 0;
+              isClickProfil = false;
               final navigator = Navigator.of(context);
               await Future.delayed(Duration.zero);
               navigator.push(
@@ -50,7 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
               );
             },
             child: Container(
-              color: isClickSohbet!=1?Colors.transparent:Colors.grey.withOpacity(0.15),
+              color: isClickProfil!=true?Colors.transparent:Colors.grey.withOpacity(0.15),
               child: Row(
                 children: [
                   Expanded(child: MessageCard("Erdal Enes Kara", 33, false)),
@@ -59,7 +69,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       child: Icon(
                         Icons.qr_code,
                         color: rkwhatsappGreen,
-                        size: 18,
+                        size: 26,
                       )), //qrcode
                 ],
               ),
@@ -70,29 +80,59 @@ class _SettingsPageState extends State<SettingsPage> {
             height: 0.4,
             color: rkappbar,
           ), //çizgi
-          Container(
-              margin: EdgeInsets.all(15),
-              child: SettingCard(
-                  () {},
-                  Icon(
-                    Icons.vpn_key,
-                    color: Colors.grey,
-                    size: 18,
-                  ),
-                  "Hesap",
-                  "Gizlilik, güvenlik, numara değiştir")), //hesap
           GestureDetector(
             onTapDown: (detail) => setState(() {
-              isClickSohbet = 2;
+              isClickHesap = true;
             }),
             onTapUp: (detail) => setState(() {
-              isClickSohbet = 0;
+              isClickHesap = false;
             }),
             onTapCancel: (){setState(() {
-              isClickSohbet = 0;
+              isClickHesap = false;
             });},
             onTap: () async {
-              isClickSohbet = 0;
+              isClickHesap = false;
+              final navigator = Navigator.of(context);
+              await Future.delayed(Duration.zero);
+              navigator.push(
+                MaterialPageRoute(
+                    builder: (_) => Hesap()),
+              );
+            },
+            child: Container(
+              width: double.infinity,
+                height: 82,
+                color: isClickHesap!=true?Colors.transparent:Colors.grey.withOpacity(0.15),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SettingCard(
+                          () {},
+                          Icon(
+                            Icons.vpn_key,
+                            color: Colors.grey,
+                            size: 22,
+                          ),
+                          "Hesap",
+                          "Gizlilik, güvenlik, numara değiştir"),
+                    ],
+                  ),
+                )),
+          ), //hesap
+          GestureDetector(
+            onTapDown: (detail) => setState(() {
+              isClickSohbet = true;
+            }),
+            onTapUp: (detail) => setState(() {
+              isClickSohbet = false;
+            }),
+            onTapCancel: (){setState(() {
+              isClickSohbet = false;
+            });},
+            onTap: () async {
+              isClickSohbet = false;
               final navigator = Navigator.of(context);
               await Future.delayed(Duration.zero);
               navigator.push(
@@ -101,77 +141,179 @@ class _SettingsPageState extends State<SettingsPage> {
               );
             },
             child: Container(
-              color: isClickSohbet!=2?Colors.transparent:Colors.grey.withOpacity(0.15),
-                margin: EdgeInsets.all(15),
-                child: SettingCard(
-                    () {},
-                    Icon(
-                      Icons.comment,
-                      color: Colors.grey,
-                      size: 18,
-                    ),
-                    "Sohbetler",
-                    "Tema, duvar kağıtları, sohbet geçmişi")),
+              width: double.infinity,
+              height: 82,
+              color: isClickSohbet!=true?Colors.transparent:Colors.grey.withOpacity(0.15),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    children: [
+                      SettingCard(
+                          () {},
+                          Icon(
+                            Icons.comment,
+                            color: Colors.grey,
+                            size: 22,
+                          ),
+                          "Sohbetler",
+                          "Tema, duvar kağıtları, sohbet geçmişi"),
+                    ],
+                  ),
+                )),
           ), //sohbetler
           GestureDetector(
     onTapDown: (detail) => setState(() {
-    isClickSohbet = 3;
+    isClickBildirim = true;
     }),
             onTapUp: (detail) => setState(() {
-              isClickSohbet = 0;
+              isClickBildirim = false;
             }),
     onTapCancel: (){setState(() {
-    isClickSohbet = 0;
+    isClickBildirim = false;
     });},
-    onTap: () {
-    isClickSohbet = 0;
-    },
+            onTap: () async {
+              isClickBildirim = false;
+              final navigator = Navigator.of(context);
+              await Future.delayed(Duration.zero);
+              navigator.push(
+                MaterialPageRoute(
+                    builder: (_) => Bildirimler()),
+              );
+            },
             child: Container(
-                color: isClickSohbet!=3?Colors.transparent:Colors.grey.withOpacity(0.15),
-                margin: EdgeInsets.all(15),
-                child: SettingCard(
-                    () {},
-                    Icon(
-                      Icons.notifications,
-                      color: Colors.grey,
-                      size: 18,
-                    ),
-                    "Bildirimler",
-                    "Mesaj, grup ve arama sesleri")),
+              width: double.infinity,
+                height: 82,
+                color: isClickBildirim!=true?Colors.transparent:Colors.grey.withOpacity(0.15),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: SettingCard(
+                      () {},
+                      Icon(
+                        Icons.notifications,
+                        color: Colors.grey,
+                        size: 22,
+                      ),
+                      "Bildirimler",
+                      "Mesaj, grup ve arama sesleri"),
+                )),
           ), //bildirimler
-          Container(
-              margin: EdgeInsets.all(15),
-              child: SettingCard(
-                  () {},
-                  Icon(
-                    Icons.storage,
-                    color: Colors.grey,
-                    size: 18,
+          GestureDetector(
+            onTapDown: (detail) => setState(() {
+              isClickDepolama = true;
+            }),
+            onTapUp: (detail) => setState(() {
+              isClickDepolama = false;
+            }),
+            onTapCancel: (){setState(() {
+              isClickDepolama = false;
+            });},
+            onTap: () async {
+              isClickDepolama = false;
+              final navigator = Navigator.of(context);
+              await Future.delayed(Duration.zero);
+              navigator.push(
+                MaterialPageRoute(
+                    builder: (_) => Depolama()),
+              );
+            },
+            child: Container(
+                width: double.infinity,
+                height: 82,
+                color: isClickDepolama!=true?Colors.transparent:Colors.grey.withOpacity(0.15),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SettingCard(
+                              () {},
+                          Icon(
+                            Icons.storage,
+                            color: Colors.grey,
+                            size: 22,
+                          ),
+                          "Depolama ve veriler",
+                          "Ağ kullanımım, otomatik indirme"),
+                    ],
                   ),
-                  "Depolama ve veriler",
-                  "Ağ kullanımı, otomatik indirme")), //depolama
-          Container(
-              margin: EdgeInsets.all(15),
-              child: SettingCard(
-                  () {},
-                  Icon(
-                    Icons.help_outline,
-                    color: Colors.grey,
-                    size: 18,
+                )),
+          ), //depolama
+          GestureDetector(
+            onTapDown: (detail) => setState(() {
+              isClickYardim = true;
+            }),
+            onTapUp: (detail) => setState(() {
+              isClickYardim = false;
+            }),
+            onTapCancel: (){setState(() {
+              isClickYardim = false;
+            });},
+            onTap: () async {
+              isClickYardim = false;
+              final navigator = Navigator.of(context);
+              await Future.delayed(Duration.zero);
+              navigator.push(
+                MaterialPageRoute(
+                    builder: (_) => Yardim()),
+              );
+            },
+            child: Container(
+                width: double.infinity,
+                height: 82,
+                color: isClickYardim!=true?Colors.transparent:Colors.grey.withOpacity(0.15),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SettingCard(
+                              () {},
+                          Icon(
+                            Icons.help_outline,
+                            color: Colors.grey,
+                            size: 22,
+                          ),
+                          "Yardım",
+                          "Yardım merkezi, bize ulaşın, gizlilik ilkesi"),
+                    ],
                   ),
-                  "Yardım",
-                  "Yardım merkezi, bize ulaşın, gizlilik ilkesi")), //yardım
-          Container(
-              margin: EdgeInsets.all(15),
-              child: SettingCard(
-                  () {},
-                  Icon(
-                    Icons.people,
-                    color: Colors.grey,
-                    size: 18,
+                )),
+          ), //yardım
+          GestureDetector(
+            onTapDown: (detail) => setState(() {
+              isClickDavet = true;
+            }),
+            onTapUp: (detail) => setState(() {
+              isClickDavet = false;
+            }),
+            onTapCancel: (){setState(() {
+              isClickDavet = false;
+            });},
+            onTap: () async {
+              isClickDavet = false;
+            },
+            child: Container(
+                width: double.infinity,
+                height: 82,
+                color: isClickDavet!=true?Colors.transparent:Colors.grey.withOpacity(0.15),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SettingCard(
+                              () {},
+                          Icon(
+                            Icons.people,
+                            color: Colors.grey,
+                            size: 22,
+                          ),
+                          "Arkadaş davet edin",
+                          ""),
+                    ],
                   ),
-                  "Arkadaş davet edin",
-                  "")), //davet et
+                )),
+          ), //davet et
         ],
       ),
     );

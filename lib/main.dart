@@ -33,10 +33,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   double toolbarheight = 100;
   int selectedPage = 1;
+  bool anyoneisSelect = false;
 
-  List<String> listeisim = ["Erdal Enes Kara", "Alper Alp", "Görkem Buzdere"];
-  List<bool> isSelectedlist = [false, false, false];
-  List<String> listeisimfiltreli = ["Erdal Enes Kara", "Alper Alp", "Görkem Buzdere"];
+  List<String> listeisim = ["Alper Alp", "Göksel Bekdemir", "Görkem Buzdere", "Halil İbrahim Yıldız", "İbrahim Özkaracan", "İmran Yıldırım", "Murat Bayrak", "Yunus Erkan"];
+  List<bool> isSelectedlist = [false, false, false, false, false, false, false, false];
+  List<String> listeisimfiltreli = ["Alper Alp", "Göksel Bekdemir", "Görkem Buzdere", "Halil İbrahim Yıldız", "İbrahim Özkaracan", "İmran Yıldırım", "Murat Bayrak", "Yunus Erkan"];
 
   TextEditingController eCtrl = TextEditingController();
   TextEditingController eCtrl2 = TextEditingController();
@@ -51,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: rkbackground,
       appBar: AppBar(
         toolbarHeight: toolbarheight,
-        backgroundColor: rkappbar,
+        backgroundColor: anyoneisSelect?rkappbar.withOpacity(0.65):rkappbar,
         title: Column(
           children: [
             Visibility(
@@ -108,12 +109,41 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    anyoneisSelect?IconButton(onPressed: (){
+                      for(var i = 0; i < isSelectedlist.length; i++ ){
+                        isSelectedlist[i]==true?isSelectedlist[i]=false:"";
+                      }
+                      setState(() {
+                        anyoneisSelect = false;
+                      });
+                    }, icon: Icon(Icons.arrow_back)):Text(
                       "WhatsApp",
                       style: TextStyle(color: rktext, fontSize: 18),
                     ),
                     Row(
                       children: [
+                        anyoneisSelect==true?IconButton(
+                            onPressed: () {
+                              setState(() {
+                                int counter = 0;
+                                while(counter < listeisim.length){
+                                  if(isSelectedlist[counter] == true){
+                                    isSelectedlist.removeAt(counter);
+                                    listeisimfiltreli.removeAt(counter);
+                                    listeisim.removeAt(counter);
+                                    counter = 0;
+                                  }
+                                  else{
+                                    counter++;
+                                  }
+                                }
+                                anyoneisSelect=false;
+                              });
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: rktext,
+                            )):Text(""),
                         IconButton(
                             onPressed: () {
                               setState(() {
@@ -139,6 +169,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                       style: stypopupmenutxt,
                                     ),
                                   ),
+                              PopupMenuItem(
+                                child: Text(
+                                  "Yeni Toplu Mesaj",
+                                  style: stypopupmenutxt,
+                                ),
+                              ),
+                              PopupMenuItem(
+                                child: Text(
+                                  "Bağlı Cihazlar",
+                                  style: stypopupmenutxt,
+                                ),
+                              ),
                                   PopupMenuItem(
                                     child: Text(
                                       "Yıldızlı mesajlar",
@@ -156,26 +198,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                     },
                                     child: Text(
                                       "Ayarlar",
-                                      style: stypopupmenutxt,
-                                    ),
-                                  ),
-                                  PopupMenuItem(
-                                    onTap:(){setState(() {
-                                      int counter = 0;
-                                      while(counter < listeisim.length){
-                                        if(isSelectedlist[counter] == true){
-                                          isSelectedlist.removeAt(counter);
-                                          listeisimfiltreli.removeAt(counter);
-                                          listeisim.removeAt(counter);
-                                          counter = 0;
-                                        }
-                                        else{
-                                          counter++;
-                                        }
-                                      }
-                                    });},
-                                    child: Text(
-                                      "Sil",
                                       style: stypopupmenutxt,
                                     ),
                                   ),
@@ -299,24 +321,52 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          Visibility(
-            visible: selectedPage==1?true:false,
-            child: Flexible(
+          Visibility(visible: selectedPage==1?true:false, child: Flexible(
                 child: ListView.builder(
                     itemCount: listeisimfiltreli.length,
                     itemBuilder: (BuildContext ctxt, int index) {
                       return GestureDetector(onTap: () async{
-                        final navigator = Navigator.of(context);
-                        await Future.delayed(Duration.zero);
-                        navigator.push(
-                          MaterialPageRoute(
-                              builder: (_) => MessagePage(listeisimfiltreli[index])),
-                        );
+                        if(!anyoneisSelect){
+                          setState(() {
+                            isClickedSearchBtn = false;
+                            eCtrl2.clear();
+                            canLongPress = true;
+                            setState(() {
+                              toolbarheight = 100;
+                              listeisimfiltreli.clear();
+                              for(var i = 0; i < listeisim.length; i++ ){
+                                listeisimfiltreli.add(listeisim[i]);
+                              }
+                            });
+                          });
+                          final navigator = Navigator.of(context);
+                          await Future.delayed(Duration.zero);
+                          navigator.push(
+                            MaterialPageRoute(
+                                builder: (_) => MessagePage(listeisimfiltreli[index])),
+                          );
+                        }
+                        else{
+                          setState(() {
+                            canLongPress? isSelectedlist[index] = !isSelectedlist[index]:"";
+                            if(isSelectedlist.contains(true)){
+                              anyoneisSelect = true;
+                            }
+                            else{
+                              anyoneisSelect = false;
+                            }
+                          });
+                        }
                       } ,onLongPress: (){setState(() {
                         canLongPress? isSelectedlist[index] = !isSelectedlist[index]:"";
+                        if(isSelectedlist.contains(true)){
+                          anyoneisSelect = true;
+                        }
+                        else{
+                          anyoneisSelect = false;
+                        }
                       });} ,child: MessageCard(listeisimfiltreli[index], 24, isSelectedlist[index]));
-                    })),
-          ),
+                    })),),
           Visibility(visible: selectedPage==2?true:false, child: Column(children:[MessageCard("Durum", 24, false),
             Row(
               children: [

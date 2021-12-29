@@ -8,15 +8,15 @@ class Sohbetler extends StatefulWidget {
 }
 
 class _SohbetlerState extends State<Sohbetler> {
-  bool chkboxTema1 = false;
-  bool chkboxTema2 = true;
+  bool chkboxTema1 = isDarkMode?false:true;
+  bool chkboxTema2 = isDarkMode?true:false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: rkbackground,
+      backgroundColor: isDarkMode?rkbackground:Colors.white,
       appBar: AppBar(
-        backgroundColor: rkappbar,
+        backgroundColor: isDarkMode?rkappbar:rkwhatsappGreen,
         title: Column(
           children: [
             Text(
@@ -47,43 +47,44 @@ class _SohbetlerState extends State<Sohbetler> {
                             'Tema seç',
                             style: stynametxt,
                           ),
-                          content: Flexible(
-                            child: Row(
-                              children: [
-                                Checkbox(
-                                    checkColor: Colors.white,
-                                    fillColor: MaterialStateProperty.all(chkboxTema1 ? rkwhatsappGreen: rktext2),
-                                    value: chkboxTema1,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        Navigator.pop(context);
-                                        chkboxTema1 = true;
-                                        chkboxTema2 = false;
-                                        isDarkMode = chkboxTema2;
-                                      });
-                                    }),
-                                Text(
-                                  'Açık',
-                                  style: stynametxt,
-                                ),
-                                Checkbox(
-                                    checkColor: Colors.white,
-                                    fillColor: MaterialStateProperty.all(chkboxTema2 ? rkwhatsappGreen: rktext2),
-                                    value: chkboxTema2,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        Navigator.pop(context);
-                                        chkboxTema2 = true;
-                                        chkboxTema1 = false;
-                                        isDarkMode = chkboxTema2;
-                                      });
-                                    }),
-                                Text(
-                                  'Koyu',
-                                  style: stynametxt,
-                                ),
-                              ],
-                            ),
+                          content: Row(
+                            children: [
+                              Checkbox(
+                                  checkColor: Colors.white,
+                                  fillColor: MaterialStateProperty.all(chkboxTema1 ? rkwhatsappGreen: rktext2),
+                                  value: chkboxTema1,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                     /* Navigator.pop(context);*/
+                                      chkboxTema1 = true;
+                                      chkboxTema2 = false;
+                                      value = chkboxTema1;
+                                      isDarkMode = chkboxTema2;
+                                    });
+                                  }),
+                              Text(
+                                'Açık',
+                                style: stynametxt,
+                              ),
+                              SizedBox(width: 25,),
+                              Checkbox(
+                                  checkColor: Colors.white,
+                                  fillColor: MaterialStateProperty.all(chkboxTema2 ? rkwhatsappGreen: rktext2),
+                                  value: chkboxTema2,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                    /*  Navigator.pop(context);*/
+                                      chkboxTema2 = true;
+                                      chkboxTema1 = false;
+                                      value = chkboxTema2;
+                                      isDarkMode = chkboxTema2;
+                                    });
+                                  }),
+                              Text(
+                                'Koyu',
+                                style: stynametxt,
+                              ),
+                            ],
                           ),
                           actions: <Widget>[
                             Row(
@@ -120,7 +121,7 @@ class _SohbetlerState extends State<Sohbetler> {
                       Icon(
                         Icons.brightness_6,
                         color: Colors.grey,
-                        size: 20,
+                        size: 22,
                       ),
                       "Tema",
                       "Uygulama temasını değiştir"))),
@@ -131,10 +132,11 @@ class _SohbetlerState extends State<Sohbetler> {
                   Icon(
                     Icons.crop_original,
                     color: Colors.grey,
-                    size: 20,
+                    size: 22,
                   ),
                   "Duvar kağıdı",
-                  "")),
+                ""
+              )),
           Container(
             width: double.infinity,
             height: 1,
@@ -187,10 +189,11 @@ class _SohbetlerState extends State<Sohbetler> {
                   Icon(
                     Icons.cloud_upload,
                     color: Colors.grey,
-                    size: 20,
+                    size: 22,
                   ),
                   "Sohbet yedeği",
-                  "")),
+                ""
+              )),
           Container(
               margin: EdgeInsets.all(15),
               child: SettingCard(
@@ -198,11 +201,12 @@ class _SohbetlerState extends State<Sohbetler> {
                   Icon(
                     Icons.history,
                     color: Colors.grey,
-                    size: 20,
+                    size: 22,
                   ),
                   "Sohbet geçmişi",
-                  "")),
-          Text("DarkMode: "+isDarkMode.toString(), style: TextStyle(color: Colors.blue, fontSize: 20),)
+                ""
+              )),
+         /* Text("DarkMode: "+isDarkMode.toString(), style: TextStyle(color: Colors.blue, fontSize: 20),)*/
         ],
       ),
     );

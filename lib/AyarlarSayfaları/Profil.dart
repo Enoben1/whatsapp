@@ -14,7 +14,7 @@ class _ProfilPageState extends State<ProfilPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: rkbackground,
+      backgroundColor: isDarkMode?rkbackground:Colors.white,
       appBar: AppBar(
         title: Row(
           children: [
@@ -24,7 +24,7 @@ class _ProfilPageState extends State<ProfilPage> {
             )
           ],
         ),
-        backgroundColor: rkappbar,
+        backgroundColor: isDarkMode?rkappbar:rkwhatsappGreen,
       ),
       body: Column(
         children: [
@@ -35,10 +35,9 @@ class _ProfilPageState extends State<ProfilPage> {
                   margin: EdgeInsets.all(15),
                   child: CircleAvatar(
                     backgroundColor: Colors.blueGrey,
-                    child: Icon(Icons.person, size: 120,),
                     radius: 80,
                     backgroundImage: AssetImage(
-                        'Resimler/Kisiler/' + "Erdal Enes Kara" + ".jpg"),
+                        'Resimler/Kisiler/' + "Erdal Enes Kara" + ".JPG"),
                   )),
             ],
           ),
