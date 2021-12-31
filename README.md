@@ -27,5 +27,6 @@
 Uygulamanın içinde yer alan özellikler
 * Bir kişiye mesaj gönderme
 * Yeni bir kişi ekleme
+* Kişileri silme
 * Kişiler arası arama yapma
 * Temayı değiştirme
