@@ -22,18 +22,18 @@ class _MessagePageState extends State<MessagePage> {
     return Scaffold(
       backgroundColor: isDarkMode?rkbackground:Colors.white,
       appBar: AppBar(
+        leading:  IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
+          splashRadius: 30,
+        ),
         automaticallyImplyLeading: false,
         backgroundColor: isDarkMode?rkappbar:rkwhatsappGreen,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back),
-              splashRadius: 30,
-            ),
             CircleAvatar(
               backgroundImage:
                   AssetImage('Resimler/Kisiler/' + widget.Nametext + ".JPG"),

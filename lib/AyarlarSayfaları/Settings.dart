@@ -228,7 +228,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       SettingCard(
                               () {},
                           Icon(
-                            Icons.storage,
+                            Icons.donut_large,
                             color: Colors.grey,
                             size: 22,
                           ),
